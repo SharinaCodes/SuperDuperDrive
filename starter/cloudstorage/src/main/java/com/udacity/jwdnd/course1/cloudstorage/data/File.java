@@ -9,6 +9,15 @@ public class File {
     /*TODO: revisit file type*/
     private Integer fileData;
 
+    public File(Integer fileId, String fileName, String contentType, String fileSize, Integer userId, Integer fileData) {
+        this.fileId = fileId;
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.fileSize = fileSize;
+        this.userId = userId;
+        this.fileData = fileData;
+    }
+
     public Integer getFileId() {
         return fileId;
     }

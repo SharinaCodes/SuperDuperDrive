@@ -8,7 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Base64;
 
 @Service
 public class AuthenticationService implements AuthenticationProvider {
@@ -28,8 +30,10 @@ public class AuthenticationService implements AuthenticationProvider {
 
         User user = userMapper.getUser(username);
         if (user != null) {
-            String encodeSalt = user.getSalt();
-            String hashedPassword = hashService.getHashedValue(password, encodeSalt);
+            String encodedsalt = user.getSalt();
+            String hashedPassword = hashService.getHashedValue(password, encodedsalt);
+
+            //ArrayList holds permissions
             if(user.getPassword().equals(hashedPassword)) {
                 return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
             }
@@ -38,6 +42,7 @@ public class AuthenticationService implements AuthenticationProvider {
         return null;
     }
 
+    // Tells Spring which authorization schemes this class can handle
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
